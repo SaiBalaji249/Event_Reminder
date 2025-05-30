@@ -18,7 +18,7 @@ email_id = "balajisai249@gmail.com"
 email_id_password = "cvgj tglb khmf xbwj"
 
 # Link to export the first sheet as CSV
-csv_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=csv"
+csv_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=csv&gid=0"
 
 # Read directly into pandas
 df = pd.read_csv(csv_url)
