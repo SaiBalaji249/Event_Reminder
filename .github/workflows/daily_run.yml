@@ -2,7 +2,7 @@ name: Daily Task Reminder
 
 on:
   schedule:
-    - cron: '36 13 * * *'  # 01:02 AM IST (every day)
+    - cron: '05 15 * * *'  # 01:02 AM IST (every day)
   workflow_dispatch:
 
 jobs:
