@@ -1,6 +1,4 @@
 import os
-import io
-import requests
 import pandas as pd
 from datetime import datetime
 import smtplib
@@ -14,43 +12,23 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import ParagraphStyle
 
-
-file_id = "1QDYgBxgcTcYC0tc_BlgVU4Yq8vJOMcfz"
 email_id = "balajisai249@gmail.com"
 email_id_password = "cvgj tglb khmf xbwj"
 
-
 # Link to export the first sheet as CSV
-csv_url = f"https://docs.google.com/spreadsheets/d/{file_id}/gviz/tq?tqx=out:csv"
+csv_url = f"https://docs.google.com/spreadsheets/d/1QDYgBxgcTcYC0tc_BlgVU4Yq8vJOMcfz/export?format=csv"
 
-
-response = requests.get(csv_url)
-if response.status_code != 200:
-    print("Failed to download CSV:", response.status_code)
-    exit()
-
-df = pd.read_csv(io.StringIO(response.text))
+# Read directly into pandas
+df = pd.read_csv(csv_url)
 
 def get_today_events(df):
     today = datetime.now().strftime('%d-%m')
     today_events = []
-
-    for index, row in df.iterrows():
-        date_val = row.get('date', None)
-        if pd.isnull(date_val):
-            continue  # Skip if date is missing
-        try:
-            date_str = str(date_val).strip()
-            if len(date_str) >= 5 and date_str[:5] == today:
-                name = str(row.get('name', '')).strip()
-                event = str(row.get('event', '')).strip()
-                today_events.append([name, event, date_str])
-        except Exception as e:
-            print(f"Error processing row {index}: {e}")
-            continue
-
-    return today_events
- 
+    for index in range(len(df['name'])):
+        date_event = df['date'][index][:5]
+        if date_event == today:
+            today_events.append([df['name'][index].strip(), df['event'][index].strip(), df['date'][index].strip()])
+    return today_events 
     
 def generate_pdf(data, filename="today_events.pdf"):
     doc = SimpleDocTemplate(filename, pagesize=letter)
@@ -94,7 +72,6 @@ def generate_pdf(data, filename="today_events.pdf"):
 
 def send_email_events(df, email_id, email_id_password):
     today_email_events = get_today_events(df)
-    print(today_email_events)
     # Generate the PDF table
     pdf_filename = "today_events.pdf"
     generate_pdf(today_email_events, pdf_filename)

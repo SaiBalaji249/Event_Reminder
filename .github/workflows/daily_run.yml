@@ -22,4 +22,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run the task reminder script
-        run: python task_reminder_code.py
+        run: python task_reminder.py
