@@ -1,4 +1,6 @@
 import os
+import io
+import requests
 import pandas as pd
 from datetime import datetime
 import smtplib
@@ -18,19 +20,36 @@ email_id = "balajisai249@gmail.com"
 email_id_password = "cvgj tglb khmf xbwj"
 
 # Link to export the first sheet as CSV
-csv_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=csv&gid=0"
+csv_url = f"https://docs.google.com/spreadsheets/d/{file_id}/gviz/tq?tqx=out:csv"
 
-# Read directly into pandas
-df = pd.read_csv(csv_url)
+
+response = requests.get(csv_url)
+if response.status_code != 200:
+    print("Failed to download CSV:", response.status_code)
+    exit()
+
+df = pd.read_csv(io.StringIO(response.text))
 
 def get_today_events(df):
     today = datetime.now().strftime('%d-%m')
     today_events = []
-    for index in range(len(df['name'])):
-        date_event = df['date'][index][:5]
-        if date_event == today:
-            today_events.append([df['name'][index].strip(), df['event'][index].strip(), df['date'][index].strip()])
-    return today_events 
+
+    for index, row in df.iterrows():
+        date_val = row.get('date', None)
+        if pd.isnull(date_val):
+            continue  # Skip if date is missing
+        try:
+            date_str = str(date_val).strip()
+            if len(date_str) >= 5 and date_str[:5] == today:
+                name = str(row.get('name', '')).strip()
+                event = str(row.get('event', '')).strip()
+                today_events.append([name, event, date_str])
+        except Exception as e:
+            print(f"Error processing row {index}: {e}")
+            continue
+
+    return today_events
+ 
     
 def generate_pdf(data, filename="today_events.pdf"):
     doc = SimpleDocTemplate(filename, pagesize=letter)
