@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      FILE_ID:  ${{ secrets.FILE_ID }}
       EMAIL_ID: ${{ secrets.EMAIL_ID }}
-      EMAIL_PASSWORD: ${{ secrets.EMAIL_ID_PASSWORD }}
+      EMAIL_ID_PASSWORD: ${{ secrets.EMAIL_ID_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2

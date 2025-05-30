@@ -14,9 +14,10 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import ParagraphStyle
 
-file_id = os.environ.get("FILE_ID")
-email_id = os.environ.get("EMAIL_ID")
-email_id_password = os.environ.get("EMAIL_ID_PASSWORD")
+
+file_id = os.environ.get('FILE_ID')
+email_id = os.environ.get('EMAIL_ID')
+email_id_password = os.environ.get('EMAIL_ID_PASSWORD')
 
 
 # Link to export the first sheet as CSV
