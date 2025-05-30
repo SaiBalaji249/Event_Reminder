@@ -15,9 +15,9 @@ from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import ParagraphStyle
 
 
-file_id = os.environ.get('FILE_ID')
-email_id = os.environ.get('EMAIL_ID')
-email_id_password = os.environ.get('EMAIL_ID_PASSWORD')
+file_id = "1QDYgBxgcTcYC0tc_BlgVU4Yq8vJOMcfz"
+email_id = "balajisai249@gmail.com"
+email_id_password = "cvgj tglb khmf xbwj"
 
 
 # Link to export the first sheet as CSV
