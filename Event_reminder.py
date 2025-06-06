@@ -11,6 +11,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import ParagraphStyle
+from zoneinfo import ZoneInfo
 
 email_id = "balajisai249@gmail.com"
 email_id_password = "cvgj tglb khmf xbwj"
@@ -22,7 +23,8 @@ csv_url = f"https://docs.google.com/spreadsheets/d/1QDYgBxgcTcYC0tc_BlgVU4Yq8vJO
 df = pd.read_csv(csv_url)
 
 def get_today_events(df):
-    today = (datetime.now() - timedelta(days=1)).strftime('%d-%m')
+    now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
+    today = now_ist.strftime('%d-%m')
     today_events = []
     for index in range(len(df['name'])):
         date_event = df['date'][index][:5]
@@ -33,9 +35,10 @@ def get_today_events(df):
 def generate_pdf(data, filename="today_events.pdf"):
     doc = SimpleDocTemplate(filename, pagesize=letter)
     elements = []
+    now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
 
     # Get today's date
-    today_date = (datetime.now() - timedelta(days = 1)).strftime('%d-%m-%Y')
+    today_date = now_ist.strftime('%d-%m-%Y')
 
     # Define a custom heading style (centered, bold, large)
     title_style = ParagraphStyle(
