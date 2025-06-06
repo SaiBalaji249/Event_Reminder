@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -22,7 +22,7 @@ csv_url = f"https://docs.google.com/spreadsheets/d/1QDYgBxgcTcYC0tc_BlgVU4Yq8vJO
 df = pd.read_csv(csv_url)
 
 def get_today_events(df):
-    today = datetime.now().strftime('%d-%m')
+    today = (datetime.now() - timedelta(days=1)).strftime('%d-%m')
     today_events = []
     for index in range(len(df['name'])):
         date_event = df['date'][index][:5]
@@ -35,7 +35,7 @@ def generate_pdf(data, filename="today_events.pdf"):
     elements = []
 
     # Get today's date
-    today_date = datetime.now().strftime('%d-%m-%Y')
+    today_date = (datetime.now() - timedelta(days = 1)).strftime('%d-%m-%Y')
 
     # Define a custom heading style (centered, bold, large)
     title_style = ParagraphStyle(
