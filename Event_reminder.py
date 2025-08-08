@@ -32,6 +32,7 @@ def get_today_events(df):
             today_events.append([df['name'][index].strip(), df['event'][index].strip(), df['date'][index].strip()])
     return today_events 
     
+#This will generate pdf for selected events
 def generate_pdf(data, filename="today_events.pdf"):
     doc = SimpleDocTemplate(filename, pagesize=letter)
     elements = []
