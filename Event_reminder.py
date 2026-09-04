@@ -74,30 +74,80 @@ def generate_pdf(data, filename="today_events.pdf"):
     elements.append(table)
     doc.build(elements)
 
+# def send_email_events(df, email_id, email_id_password):
+#     today_email_events = get_today_events(df)
+#     # Generate the PDF table
+#     pdf_filename = "today_events.pdf"
+#     generate_pdf(today_email_events, pdf_filename)
+
+#     # Create email
+#     msg = MIMEMultipart()
+#     msg['Subject'] = "Today Events List Just Reminding"
+#     msg['From'] = email_id
+#     msg['To'] = email_id
+
+#     # Attach message body
+#     if today_email_events:
+#         msg.attach(MIMEText("Attached is today's events in PDF format.", "plain"))
+#         # Attach PDF file
+#         with open(pdf_filename, "rb") as file:
+#             part = MIMEApplication(file.read(), Name=pdf_filename)
+#             part['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+#             msg.attach(part)
+#     else:
+#         msg.attach(MIMEText("No events today.", "plain"))
+        
+#     # Send the email
+#     try:
+#         with smtplib.SMTP('smtp.gmail.com', 587) as server:
+#             server.starttls()
+#             server.login(email_id, email_id_password)
+#             server.send_message(msg)
+#         print("Email with PDF sent successfully.")
+#     except Exception as e:
+#         print("Error sending email:", e)
+#     finally:
+#         # Clean up the file
+#         if os.path.exists(pdf_filename):
+#             os.remove(pdf_filename)
+
+# Updated Email format on 04-09-2026
 def send_email_events(df, email_id, email_id_password):
     today_email_events = get_today_events(df)
+
     # Generate the PDF table
     pdf_filename = "today_events.pdf"
     generate_pdf(today_email_events, pdf_filename)
 
     # Create email
     msg = MIMEMultipart()
-    msg['Subject'] = "Today Events List Just Reminding"
+
+    # Set subject based on whether there are events
+    if today_email_events:
+        msg['Subject'] = "Today Events List Just Reminding"
+    else:
+        msg['Subject'] = "No events today"
+
     msg['From'] = email_id
     msg['To'] = email_id
 
     # Attach message body
     if today_email_events:
-        msg.attach(MIMEText("Attached is today's events in PDF format.", "plain"))
+        msg.attach(
+            MIMEText(
+                "Attached is today's events in PDF format.",
+                "plain"
+            )
+        )
+
         # Attach PDF file
         with open(pdf_filename, "rb") as file:
             part = MIMEApplication(file.read(), Name=pdf_filename)
             part['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
             msg.attach(part)
+
     else:
         msg.attach(MIMEText("No events today.", "plain"))
-
-    
 
     # Send the email
     try:
@@ -105,13 +155,17 @@ def send_email_events(df, email_id, email_id_password):
             server.starttls()
             server.login(email_id, email_id_password)
             server.send_message(msg)
+
         print("Email with PDF sent successfully.")
+
     except Exception as e:
         print("Error sending email:", e)
+
     finally:
         # Clean up the file
         if os.path.exists(pdf_filename):
             os.remove(pdf_filename)
+            
 
 if __name__ == "__main__":
     send_email_events(df, email_id, email_id_password)
