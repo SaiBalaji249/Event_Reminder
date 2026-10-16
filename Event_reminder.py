@@ -22,33 +22,6 @@ csv_url = (
     "1QDYgBxgcTcYC0tc_BlgVU4Yq8vJOMcfz/export?format=csv"
 )
 
-# Get today's events from Google Sheets data
-# def get_today_events(df):
-#     now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
-#     today = (now_ist + timedelta(days = 1)).strftime("%d-%m")
-
-#     today_events = []
-
-#     for _, row in df.iterrows():
-#         name = str(row["name"]).strip() if pd.notna(row["name"]) else ""
-#         event = str(row["event"]).strip() if pd.notna(row["event"]) else ""
-#         date = str(row["date"]).strip() if pd.notna(row["date"]) else ""
-
-#         if not date:
-#             continue
-
-#         try:
-#             event_date = pd.to_datetime(
-#                 date, dayfirst=True, errors="raise"
-#             ).strftime("%d-%m")
-#         except (ValueError, TypeError):
-#             continue
-
-#         if event_date == today:
-#             today_events.append([name, event, date])
-
-#     return today_events
-
 
 def get_tomorrow_events(df):
     now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
