@@ -1,4 +1,3 @@
-
 import os
 import html
 import pandas as pd
@@ -13,8 +12,8 @@ from datetime import datetime, timedelta
 
 
 # Gmail credentials (set these as environment variables)
-email_id = ""
-email_id_password = ""
+email_id = "balajisai249@gmail.com"
+email_id_password = "cvgj tglb khmf xbwj"
 
 
 # Google Sheets CSV URL
